@@ -152,8 +152,12 @@ class Torrent {
     public static function fromFile($filename){
         $contents = file_get_contents($filename);
 
+        return self::fromString($contents);
+    }
+
+    public static function fromString($string){
         $bee = new Bee();
-        $decoded = $bee->decode($contents);
+        $decoded = $bee->decode($string);
         $torrent = new Torrent($decoded);
 
         return $torrent;
