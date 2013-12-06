@@ -27,8 +27,9 @@ class Torrent {
         } else {
             $this->files = array();
 
-            foreach($this->data['info']['files'] as &$data)
+            foreach($this->data['info']['files'] as &$data){
                 $this->files[] = new File($data);
+            }
         }
     }
 
@@ -138,6 +139,55 @@ class Torrent {
 
     public function getFiles(){
         return $this->files;
+    }
+
+    public function getFileTree(){
+        $tree = array();
+
+        // Create the tree
+        foreach($this->getFiles() as $file){
+            $start = &$tree;
+            foreach($file->getParentDirectories() as $dir){
+                $start = &$start[$dir];
+            }
+
+            $start[$file->getName()] = $file;
+        }
+
+
+        // Sort the tree, recursively, depth first search
+        $to_sort = array(&$tree);
+        while(count($to_sort)){
+            $array = &$to_sort[count($to_sort)-1];
+            array_pop($to_sort);
+
+            // Sort current 'view'
+            uksort($array, function($keyA, $keyB) use($array){
+                $a = $array[$keyA];
+                $b = $array[$keyB];
+
+                // Order 2 directories according to their name
+                if(is_array($a) && is_array($b))
+                    return strcasecmp($keyA, $keyB);
+
+                // Order the directory above the file
+                elseif(is_array($a) && !is_array($b))
+                    return -1;
+
+                // Order the directory above the file
+                elseif(!is_array($a) && is_array($b))
+                    return 1;
+
+                // Order 2 files according to their name
+                else
+                    return strcasecmp($a->getName(), $b->getName());
+            });
+
+            foreach($array as $k => $item)
+                if(is_array($item))
+                    $to_sort[] = &$array[$k];
+        }
+        return $tree;
     }
 
     public function toArray(){
