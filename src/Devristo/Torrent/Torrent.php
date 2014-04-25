@@ -43,7 +43,7 @@ class Torrent {
             return count(array_diff($keys, array_keys($data))) === 0;
         };
 
-        if(!$hasKeys(array('info', 'announce'), $this->data))
+        if(!$hasKeys(array('info'), $this->data))
             return false;
 
         if(!$hasKeys(array('piece length', 'pieces'), $this->data['info']))
@@ -53,7 +53,7 @@ class Torrent {
     }
 
     public function getAnnounce(){
-        return $this->data['announce'];
+        return array_key_exists('announce', $this->data) ? $this->data['announce'] : null;
     }
 
     public function setAnnounce($url){

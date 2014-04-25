@@ -14,17 +14,22 @@ class TorrentTest extends PHPUnit_Framework_TestCase {
      */
     protected $torrent;
 
-    public function setUp(){
-        $this->torrent = Torrent::fromFile('ubuntu-13.10-desktop-amd64.iso.torrent');
+    public function test_without_announce(){
+        $torrent = Torrent::fromFile('1992-06-15.torrent');
+        $this->assertNull($torrent->getAnnounce());
     }
 
     public function test_file(){
+        $this->torrent = Torrent::fromFile('ubuntu-13.10-desktop-amd64.iso.torrent');
+
         $this->assertEquals('ubuntu-13.10-desktop-amd64.iso', $this->torrent->getFiles()[0]->getPath());
         $this->assertEquals(925892608, $this->torrent->getFiles()[0]->getSize());
         $this->assertEquals(null, $this->torrent->getFiles()[0]->getMd5Sum());
     }
 
     public function test_main_details(){
+        $this->torrent = Torrent::fromFile('ubuntu-13.10-desktop-amd64.iso.torrent');
+
         $this->assertEquals('http://torrent.ubuntu.com:6969/announce', $this->torrent->getAnnounce());
         $this->assertEquals(array(
                 array('http://torrent.ubuntu.com:6969/announce'),
