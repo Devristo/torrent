@@ -32,7 +32,7 @@ class Bee {
     private function encode_dict(array $dict){
         $encoded = 'd';
 
-        ksort($dict);
+        ksort($dict, SORT_STRING);
 
         foreach($dict as $key => $value){
             $encoded .= $this->encode_string($key);
@@ -53,6 +53,10 @@ class Bee {
         return is_null(key($arr));
     }
 
+    /**
+     * @param $object
+     * @return string
+     */
     public function encode($object){
         if(is_int($object) || ctype_digit($object))
             return $this->encode_int($object);
@@ -148,6 +152,11 @@ class Bee {
         throw new \InvalidArgumentException("Invalid string format");
     }
 
+    /**
+     * @param $string
+     * @param int $pos
+     * @return mixed
+     */
     public function decode($string, &$pos=0){
         while($pos < strlen($string)){
             switch($string[$pos]){
