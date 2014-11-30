@@ -5,13 +5,13 @@
     "authors": [
         {
             "name": "Chris",
-            "email": "chris@devristo.com"
+            "email": "risto@live.nl"
         }
     ],
     "autoload": {
-        "psr-0": {"Devristo\\": "src/"}
+        "psr-4": {"Devristo\\Torrent\\": "src/"}
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require-dev": {
         "phpunit/phpunit": ">=3"
     }

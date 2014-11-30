@@ -6,8 +6,6 @@
  * Time: 18:02
  */
 
-require(__DIR__."/../vendor/autoload.php");
-
 class BeeTest extends PHPUnit_Framework_TestCase {
     public function test_encode_string(){
         $input = "hello world";
